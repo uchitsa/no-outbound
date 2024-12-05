@@ -32,10 +32,16 @@ public class NoOutboundConnectionsRule implements TestRule {
             }
         }
 
-        private void overrideSocketClass() throws NoSuchFieldException {
+        private void overrideSocketClass() throws NoSuchFieldException, IllegalAccessException {
             Class<?> socketClass = Socket.class;
             Field classLoaderField = Class.class.getDeclaredField("classLoader");
-
+            classLoaderField.setAccessible(true);
+            classLoaderField.set(socketClass, new ClassLoader() {
+                @Override
+                protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+                    return super.loadClass(name, resolve);
+                }
+            });
         }
 
 
