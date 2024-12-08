@@ -45,7 +45,11 @@ public class NoOutboundConnectionsRule implements TestRule {
         }
 
 
-        private void restoreSocketClass() {
+        private void restoreSocketClass() throws NoSuchFieldException, IllegalAccessException {
+            Class<?> socketClass = Socket.class;
+            Field classLoaderField = Class.class.getDeclaredField("classLoader");
+            classLoaderField.setAccessible(true);
+            classLoaderField.set(socketClass, null);
         }
     }
 
