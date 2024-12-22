@@ -16,7 +16,7 @@ public class NoOutboundConnectionsRule implements TestRule {
         return base;
     }
 
-    private class NoOutboundConnectionsStatement extends Statement {
+    private static class NoOutboundConnectionsStatement extends Statement {
         private final Statement base;
 
         public NoOutboundConnectionsStatement(Statement base) {
