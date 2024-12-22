@@ -39,6 +39,9 @@ public class NoOutboundConnectionsRule implements TestRule {
             classLoaderField.set(socketClass, new ClassLoader() {
                 @Override
                 protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+                    if (name.equals("java.net.Socket")) {
+                        throw new ClassNotFoundException("Outbound connections are prohibited by @NoOutboundConnections");
+                    }
                     return super.loadClass(name, resolve);
                 }
             });
